@@ -1,0 +1,12 @@
+dist
+coverage
+
+*.html
+
+**/*.scss
+
+*.json
+
+*.md
+
+.prettierrc
