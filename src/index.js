@@ -107,21 +107,19 @@ img.addEventListener('load', () => {
     ctx.clearRect(0, 0, 600, 600);
     ctx.strokeStyle = '#000000';
     ctx.beginPath();
-    for (let amount = 0; amount < 2; amount + 1) {
-      ctx.moveTo(137 + amount * 200, 271);
-      ctx.lineTo(165 + amount * 200, 203);
-      ctx.lineTo(107 + amount * 200, 160);
-      ctx.lineTo(181 + amount * 200, 161);
-      ctx.lineTo(209 + amount * 200, 90);
-      ctx.lineTo(235 + amount * 200, 160);
-      ctx.lineTo(310 + amount * 200, 164);
-      ctx.lineTo(251 + amount * 200, 202);
-      ctx.lineTo(276 + amount * 200, 276);
-      ctx.lineTo(207 + amount * 200, 231);
-      ctx.lineTo(138 + amount * 200, 274);
-      ctx.stroke();
-      ctx.closePath();
-    }
+    ctx.moveTo(137, 271);
+    ctx.lineTo(165, 203);
+    ctx.lineTo(107, 160);
+    ctx.lineTo(181, 161);
+    ctx.lineTo(209, 90);
+    ctx.lineTo(235, 160);
+    ctx.lineTo(310, 164);
+    ctx.lineTo(251, 202);
+    ctx.lineTo(276, 276);
+    ctx.lineTo(207, 231);
+    ctx.lineTo(138, 274);
+    ctx.stroke();
+    ctx.closePath();
 
     ctx.drawImage(img, cycle * spriteW, spriteDirection, spriteW, spriteH, pX, pY, 48, 48);
   }, 120);
