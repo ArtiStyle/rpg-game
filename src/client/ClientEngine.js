@@ -1,20 +1,22 @@
 /* eslint-disable object-curly-newline */
-/* eslint-disable guard-for-in */
-/* eslint-disable no-restricted-syntax */
 import EventSourceMixin from '../common/EventSourceMixin';
+import ClientCamera from './ClientCamera';
+import ClientInput from './ClientInput';
 
 class ClientEngine {
   constructor(canvas) {
-    console.log(canvas);
     Object.assign(this, {
       canvas,
-      stx: null,
+      ctx: null,
       imageLoaders: [],
       sprites: {},
-      images: [],
+      images: {},
+      camera: new ClientCamera({ canvas, engine: this.engine }),
+      input: new ClientInput(canvas),
     });
 
     this.ctx = canvas.getContext('2d');
+
     this.loop = this.loop.bind(this);
   }
 
@@ -36,17 +38,19 @@ class ClientEngine {
   }
 
   loadSprites(spritesGroup) {
-    this.emageLoaders = [];
-    for (const groupName in spritesGroup) {
+    this.imageLoaders = [];
+    Object.keys(spritesGroup).forEach((groupName) => {
       const group = spritesGroup[groupName];
       this.sprites[groupName] = group;
-      for (const spriteName in group) {
+
+      Object.keys(group).forEach((spriteName) => {
         const { img } = group[spriteName];
         if (!this.images[img]) {
           this.imageLoaders.push(this.loadImage(img));
         }
-      }
-    }
+      });
+    });
+
     return Promise.all(this.imageLoaders);
   }
 
@@ -59,8 +63,7 @@ class ClientEngine {
     });
   }
 
-  renderSpriteFrame(data) {
-    const { sprite, frame, x, y, w, h } = data;
+  renderSpriteFrame({ sprite, frame, x, y, w, h }) {
     const spriteCfg = this.sprites[sprite[0]][sprite[1]];
     const [fx, fy, fw, fh] = spriteCfg.frames[frame];
     const img = this.images[spriteCfg.img];
@@ -68,6 +71,7 @@ class ClientEngine {
     this.ctx.drawImage(img, fx, fy, fw, fh, x, y, w, h);
   }
 }
+
 Object.assign(ClientEngine.prototype, EventSourceMixin);
 
 export default ClientEngine;
