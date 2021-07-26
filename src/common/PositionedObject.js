@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline */
 import EventSourceMixin from './EventSourceMixin';
 
 class PositionedObject {
@@ -29,7 +28,9 @@ class PositionedObject {
   }
 
   worldBounds() {
-    const { x, y, width, height } = this;
+    const {
+      x, y, width, height,
+    } = this;
     return {
       x,
       y,

@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline */
 import PositionedObject from '../common/PositionedObject';
 import ClientCell from './ClientCell';
 
@@ -25,7 +24,9 @@ class ClientWorld extends PositionedObject {
   }
 
   init() {
-    const { levelCfg, map, worldHeight, worldWidth } = this;
+    const {
+      levelCfg, map, worldHeight, worldWidth,
+    } = this;
 
     for (let row = 0; row < worldHeight; row++) {
       for (let col = 0; col < worldWidth; col++) {
@@ -44,11 +45,15 @@ class ClientWorld extends PositionedObject {
   }
 
   render(time) {
-    const { map, worldHeight, worldWidth } = this;
+    const {
+      levelCfg, map, worldHeight, worldWidth,
+    } = this;
 
-    for (let row = 0; row < worldHeight; row++) {
-      for (let col = 0; col < worldWidth; col++) {
-        map[row][col].render(time);
+    for (let layerId = 0; layerId < levelCfg.layers.length; layerId++) {
+      for (let row = 0; row < worldHeight; row++) {
+        for (let col = 0; col < worldWidth; col++) {
+          map[row][col].render(time, layerId);
+        }
       }
     }
   }

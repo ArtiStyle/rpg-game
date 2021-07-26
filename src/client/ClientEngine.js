@@ -1,18 +1,20 @@
-/* eslint-disable object-curly-newline */
 import EventSourceMixin from '../common/EventSourceMixin';
 import ClientCamera from './ClientCamera';
 import ClientInput from './ClientInput';
 
 class ClientEngine {
-  constructor(canvas) {
+  constructor(canvas, game) {
     Object.assign(this, {
       canvas,
       ctx: null,
       imageLoaders: [],
       sprites: {},
       images: {},
-      camera: new ClientCamera({ canvas, engine: this.engine }),
+      camera: new ClientCamera({ canvas, engine: this }),
       input: new ClientInput(canvas),
+      game,
+      lastRenderTime: 0,
+      startTime: 0,
     });
 
     this.ctx = canvas.getContext('2d');
@@ -25,6 +27,12 @@ class ClientEngine {
   }
 
   loop(timestamp) {
+    if (!this.startTime) {
+      this.startTime = timestamp;
+    }
+
+    this.lastRenderTime = timestamp;
+
     const { ctx, canvas } = this;
     ctx.fillStyle = 'black';
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -67,8 +75,9 @@ class ClientEngine {
     const spriteCfg = this.sprites[sprite[0]][sprite[1]];
     const [fx, fy, fw, fh] = spriteCfg.frames[frame];
     const img = this.images[spriteCfg.img];
+    const { camera } = this;
 
-    this.ctx.drawImage(img, fx, fy, fw, fh, x, y, w, h);
+    this.ctx.drawImage(img, fx, fy, fw, fh, x - camera.x, y - camera.y, w, h);
   }
 }
 
